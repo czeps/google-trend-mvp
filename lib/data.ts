@@ -1,49 +1,32 @@
-import { supabase } from './supabase';
+import { trends, posts, postTrends } from '@/data/seed';
 import { Post, Trend, PostTrend } from './types';
 
 export async function fetchTrends(): Promise<Trend[]> {
-  console.log('📊 Fetching trends...');
-  const { data, error } = await supabase
-    .from('trends')
-    .select('*')
-    .eq('is_active', true)
-    .order('created_at', { ascending: false });
+  console.log('📊 Fetching trends from local data...');
+  // Simulate async operation
+  await new Promise(resolve => setTimeout(resolve, 100));
 
-  if (error) {
-    console.error('❌ Error fetching trends:', error);
-    return [];
-  }
-
-  console.log('✅ Trends fetched:', data?.length || 0);
-  return data || [];
+  const activeTrends = trends.filter(trend => trend.is_active);
+  console.log('✅ Trends fetched:', activeTrends.length);
+  return activeTrends;
 }
 
 export async function fetchPosts(): Promise<Post[]> {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .order('created_at', { ascending: false });
+  console.log('📄 Fetching posts from local data...');
+  // Simulate async operation
+  await new Promise(resolve => setTimeout(resolve, 100));
 
-  if (error) {
-    console.error('Error fetching posts:', error);
-    return [];
-  }
-
-  return data || [];
+  console.log('✅ Posts fetched:', posts.length);
+  return posts;
 }
 
 export async function fetchPostTrends(): Promise<PostTrend[]> {
-  const { data, error } = await supabase
-    .from('post_trends')
-    .select('*')
-    .order('created_at', { ascending: false });
+  console.log('🔗 Fetching post trends from local data...');
+  // Simulate async operation
+  await new Promise(resolve => setTimeout(resolve, 100));
 
-  if (error) {
-    console.error('Error fetching post trends:', error);
-    return [];
-  }
-
-  return data || [];
+  console.log('✅ Post trends fetched:', postTrends.length);
+  return postTrends;
 }
 
 export async function fetchAllData(): Promise<{
@@ -51,39 +34,23 @@ export async function fetchAllData(): Promise<{
   posts: Post[];
   postTrends: PostTrend[];
 }> {
-  console.log('🔄 Starting to fetch data from Supabase...');
+  console.log('🔄 Starting to fetch data from local seed...');
 
-  const [trends, posts, postTrends] = await Promise.all([
+  const [trendsData, postsData, postTrendsData] = await Promise.all([
     fetchTrends(),
     fetchPosts(),
     fetchPostTrends(),
   ]);
 
   console.log('✅ Data fetched successfully:', {
-    trendsCount: trends.length,
-    postsCount: posts.length,
-    postTrendsCount: postTrends.length
+    trendsCount: trendsData.length,
+    postsCount: postsData.length,
+    postTrendsCount: postTrendsData.length
   });
 
-  return { trends, posts, postTrends };
-}
-
-// Function to test database connection
-export async function testConnection(): Promise<boolean> {
-  try {
-    const { data, error } = await supabase
-      .from('trends')
-      .select('count(*)', { count: 'exact' });
-
-    if (error) {
-      console.error('Connection test failed:', error);
-      return false;
-    }
-
-    console.log('Connection successful. Trends count:', data);
-    return true;
-  } catch (error) {
-    console.error('Connection test error:', error);
-    return false;
-  }
+  return {
+    trends: trendsData,
+    posts: postsData,
+    postTrends: postTrendsData
+  };
 }
