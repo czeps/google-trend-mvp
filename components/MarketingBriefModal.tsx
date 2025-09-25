@@ -374,28 +374,28 @@ export default function MarketingBriefModal({
             <h3 className="text-lg font-semibold mb-4 text-blue-600 border-b pb-2">Core</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Campaign Name *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Campaign Name *</label>
                 <input
                   type="text"
                   value={formData.campaign_name}
                   onChange={(e) => handleInputChange('campaign_name', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Delivery Email *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Delivery Email *</label>
                 <input
                   type="email"
                   value={formData.delivery_email}
                   onChange={(e) => handleInputChange('delivery_email', e.target.value)}
                   placeholder="email@company.com"
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Trend</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Trend</label>
                 <input
                   type="text"
                   value={trendMetric.trend.label}
@@ -611,11 +611,11 @@ export default function MarketingBriefModal({
             <h3 className="text-lg font-semibold mb-4 text-blue-600 border-b pb-2">Goal & Measurement</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Objective *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Objective *</label>
                 <select
                   value={formData.objective}
                   onChange={(e) => handleInputChange('objective', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                   required
                 >
                   <option value="">Select objective</option>
@@ -625,11 +625,11 @@ export default function MarketingBriefModal({
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Primary KPI *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Primary KPI *</label>
                 <select
                   value={formData.primary_kpi}
                   onChange={(e) => handleInputChange('primary_kpi', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                   required
                 >
                   <option value="">Select KPI</option>
@@ -639,20 +639,20 @@ export default function MarketingBriefModal({
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">KPI Target Value</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">KPI Target Value</label>
                 <input
                   type="number"
                   value={formData.kpi_target_value}
                   onChange={(e) => handleInputChange('kpi_target_value', Number(e.target.value))}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">KPI Unit</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">KPI Unit</label>
                 <select
                   value={formData.kpi_target_unit}
                   onChange={(e) => handleInputChange('kpi_target_unit', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 >
                   <option value="">Select unit</option>
                   {KPI_UNITS.map(unit => (
@@ -661,21 +661,21 @@ export default function MarketingBriefModal({
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Measurement Start Date</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Measurement Start Date</label>
                 <input
                   type="date"
                   value={formData.measurement_window_start}
                   onChange={(e) => handleInputChange('measurement_window_start', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Measurement End Date</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Measurement End Date</label>
                 <input
                   type="date"
                   value={formData.measurement_window_end}
                   onChange={(e) => handleInputChange('measurement_window_end', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 />
               </div>
             </div>
@@ -686,7 +686,7 @@ export default function MarketingBriefModal({
             <h3 className="text-lg font-semibold mb-4 text-blue-600 border-b pb-2">Audience</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Regions</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Regions</label>
                 <div className="space-y-2 border rounded p-2">
                   {REGIONS.map(region => (
                     <label key={region.value} className="flex items-center gap-2 text-sm">
@@ -701,7 +701,7 @@ export default function MarketingBriefModal({
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Languages</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Languages</label>
                 <div className="space-y-2 border rounded p-2">
                   {LANGUAGES.map(lang => (
                     <label key={lang.value} className="flex items-center gap-2 text-sm">
@@ -723,20 +723,20 @@ export default function MarketingBriefModal({
             <h3 className="text-lg font-semibold mb-4 text-blue-600 border-b pb-2">Timing</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Launch Start Date</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Launch Start Date</label>
                 <input
                   type="date"
                   value={formData.launch_start_date}
                   onChange={(e) => handleInputChange('launch_start_date', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Cadence</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Cadence</label>
                 <select
                   value={formData.cadence}
                   onChange={(e) => handleInputChange('cadence', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 >
                   {CADENCES.map(cadence => (
                     <option key={cadence.value} value={cadence.value}>{cadence.label}</option>
@@ -751,21 +751,21 @@ export default function MarketingBriefModal({
             <h3 className="text-lg font-semibold mb-4 text-blue-600 border-b pb-2">Budget</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Total Budget ($)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Total Budget ($)</label>
                 <input
                   type="number"
                   value={formData.budget_total}
                   onChange={(e) => handleInputChange('budget_total', Number(e.target.value))}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Creator Allowance ($)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Creator Allowance ($)</label>
                 <input
                   type="number"
                   value={formData.creator_allowance}
                   onChange={(e) => handleInputChange('creator_allowance', Number(e.target.value))}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 />
               </div>
               <div className="flex items-center">
@@ -796,12 +796,12 @@ export default function MarketingBriefModal({
                 </label>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Sensitive Topics to Avoid</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Sensitive Topics to Avoid</label>
                 <textarea
                   value={formData.sensitive_topics_to_avoid}
                   onChange={(e) => handleInputChange('sensitive_topics_to_avoid', e.target.value)}
                   rows={3}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 />
               </div>
             </div>
@@ -812,25 +812,25 @@ export default function MarketingBriefModal({
             <h3 className="text-lg font-semibold mb-4 text-blue-600 border-b pb-2">Mandatories</h3>
             <div className="grid grid-cols-1 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Brand Guidelines URL</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Brand Guidelines URL</label>
                 <input
                   type="url"
                   value={formData.brand_guidelines_url}
                   onChange={(e) => handleInputChange('brand_guidelines_url', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Required CTA Text</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Required CTA Text</label>
                 <input
                   type="text"
                   value={formData.required_cta_text}
                   onChange={(e) => handleInputChange('required_cta_text', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Required Hashtags</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Required Hashtags</label>
                 <div className="flex gap-2 mb-2">
                   <input
                     type="text"
@@ -838,7 +838,7 @@ export default function MarketingBriefModal({
                     onChange={(e) => setHashtagInput(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addHashtag())}
                     placeholder="Enter hashtag"
-                    className="flex-1 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                    className="flex-1 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                   />
                   <button
                     type="button"
@@ -864,12 +864,12 @@ export default function MarketingBriefModal({
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Legal Disclaimer</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Legal Disclaimer</label>
                 <textarea
                   value={formData.legal_disclaimer}
                   onChange={(e) => handleInputChange('legal_disclaimer', e.target.value)}
                   rows={3}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                 />
               </div>
             </div>
@@ -884,7 +884,7 @@ export default function MarketingBriefModal({
                 type="url"
                 value={formData.landing_url}
                 onChange={(e) => handleInputChange('landing_url', e.target.value)}
-                className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
               />
             </div>
           </section>
@@ -894,22 +894,22 @@ export default function MarketingBriefModal({
             <h3 className="text-lg font-semibold mb-4 text-blue-600 border-b pb-2">Governance</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Project Lead *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Project Lead *</label>
                 <input
                   type="text"
                   value={formData.project_lead}
                   onChange={(e) => handleInputChange('project_lead', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">Approver *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Approver *</label>
                 <input
                   type="text"
                   value={formData.approver}
                   onChange={(e) => handleInputChange('approver', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                   required
                 />
               </div>
@@ -923,7 +923,7 @@ export default function MarketingBriefModal({
                   onChange={(e) => setReviewerInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addReviewer())}
                   placeholder="Enter reviewer name"
-                  className="flex-1 p-2 border rounded focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                   disabled={formData.reviewers.length >= 3}
                 />
                 <button
