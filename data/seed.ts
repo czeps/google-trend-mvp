@@ -8,7 +8,7 @@ export const trends: Trend[] = [
     is_active: true,
     alt_names: ['ai code', 'codegen', 'github copilot'],
     created_at: '2024-09-01T00:00:00Z',
-    brief_url: undefined
+    brief_url: 'https://example.com/marketing-brief-trend-1.pdf'
   },
   {
     trend_id: '2',

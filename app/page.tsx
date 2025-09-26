@@ -118,19 +118,37 @@ export default function Dashboard() {
   // Initialize brief states from trend data when data loads
   useEffect(() => {
     if (data.trends.length > 0) {
-      const initialStates: Record<string, { isGenerating: boolean; generatedBriefUrl: string | null }> = {};
-      data.trends.forEach(trend => {
-        if (!briefGenerationStates[trend.trend_id]) {
-          initialStates[trend.trend_id] = {
-            isGenerating: false,
-            generatedBriefUrl: trend.brief_url || null
-          };
-        }
-      });
+      setBriefGenerationStates(prev => {
+        const updatedStates: Record<string, { isGenerating: boolean; generatedBriefUrl: string | null }> = { ...prev };
+        let hasChanges = false;
 
-      if (Object.keys(initialStates).length > 0) {
-        setBriefGenerationStates(prev => ({ ...prev, ...initialStates }));
-      }
+        data.trends.forEach(trend => {
+          // Always sync with database state, preserving isGenerating if currently active
+          const currentState = prev[trend.trend_id];
+          const dbBriefUrl = trend.brief_url || null;
+
+          // Debug logging
+          if (dbBriefUrl) {
+            console.log(`🔄 Syncing brief state for trend ${trend.trend_id}: ${dbBriefUrl}`);
+          }
+
+          // Check if we need to update this trend's state
+          if (!currentState || currentState.generatedBriefUrl !== dbBriefUrl) {
+            hasChanges = true;
+            updatedStates[trend.trend_id] = {
+              isGenerating: currentState?.isGenerating || false,
+              generatedBriefUrl: dbBriefUrl
+            };
+
+            if (dbBriefUrl) {
+              console.log(`✅ Updated brief state for trend ${trend.trend_id}: showing download button`);
+            }
+          }
+        });
+
+        // Only return updated state if there are actual changes
+        return hasChanges ? updatedStates : prev;
+      });
     }
   }, [data.trends]);
 
