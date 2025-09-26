@@ -154,7 +154,24 @@ export default function Dashboard() {
 
   // Brief state management functions
   const getBriefState = (trendId: string) => {
-    return briefGenerationStates[trendId] || { isGenerating: false, generatedBriefUrl: null };
+    // First check if we have state
+    const state = briefGenerationStates[trendId];
+    if (state) {
+      console.log(`📊 Using cached brief state for ${trendId}:`, state);
+      return state;
+    }
+
+    // If no state, check the actual trend data for brief_url
+    const trend = data.trends.find(t => t.trend_id === trendId);
+    const dbBriefUrl = trend?.brief_url || null;
+
+    console.log(`🔄 Fallback to database for ${trendId}:`, { dbBriefUrl });
+
+    // Return state based on database data
+    return {
+      isGenerating: false,
+      generatedBriefUrl: dbBriefUrl
+    };
   };
 
   const setBriefGenerating = (trendId: string, isGenerating: boolean) => {

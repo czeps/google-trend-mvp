@@ -17,7 +17,7 @@ export const trends: Trend[] = [
     is_active: true,
     alt_names: ['ai chatbot', 'customer support ai', 'automated support'],
     created_at: '2024-09-05T00:00:00Z',
-    brief_url: undefined
+    brief_url: 'https://example.com/marketing-brief-trend-2.pdf'
   },
   {
     trend_id: '3',
