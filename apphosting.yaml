@@ -8,4 +8,4 @@ env:
     value: production
 
 build:
-  command: "npm ci && npm run build"
+  command: "npm install && npm run build"
