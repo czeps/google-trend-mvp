@@ -23,6 +23,12 @@ export default function Dashboard() {
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [viewMode, setViewMode] = useState<'table' | 'comparison' | 'post-count'>('table');
 
+  // Brief generation state - persists across drawer sessions
+  const [briefGenerationStates, setBriefGenerationStates] = useState<Record<string, {
+    isGenerating: boolean;
+    generatedBriefUrl: string | null;
+  }>>({});
+
   // Data state
   const [data, setData] = useState<{
     trends: Trend[];
@@ -108,6 +114,51 @@ export default function Dashboard() {
   const kpis = useMemo(() => {
     return calculateKPIs(data.trends, data.posts, data.postTrends, filters);
   }, [data, filters]);
+
+  // Initialize brief states from trend data when data loads
+  useEffect(() => {
+    if (data.trends.length > 0) {
+      const initialStates: Record<string, { isGenerating: boolean; generatedBriefUrl: string | null }> = {};
+      data.trends.forEach(trend => {
+        if (!briefGenerationStates[trend.trend_id]) {
+          initialStates[trend.trend_id] = {
+            isGenerating: false,
+            generatedBriefUrl: trend.brief_url || null
+          };
+        }
+      });
+
+      if (Object.keys(initialStates).length > 0) {
+        setBriefGenerationStates(prev => ({ ...prev, ...initialStates }));
+      }
+    }
+  }, [data.trends]);
+
+  // Brief state management functions
+  const getBriefState = (trendId: string) => {
+    return briefGenerationStates[trendId] || { isGenerating: false, generatedBriefUrl: null };
+  };
+
+  const setBriefGenerating = (trendId: string, isGenerating: boolean) => {
+    setBriefGenerationStates(prev => ({
+      ...prev,
+      [trendId]: {
+        ...prev[trendId],
+        isGenerating,
+        generatedBriefUrl: isGenerating ? null : prev[trendId]?.generatedBriefUrl || null
+      }
+    }));
+  };
+
+  const setBriefReady = (trendId: string, briefUrl: string) => {
+    setBriefGenerationStates(prev => ({
+      ...prev,
+      [trendId]: {
+        isGenerating: false,
+        generatedBriefUrl: briefUrl
+      }
+    }));
+  };
 
   const handleSort = (field: keyof TrendMetrics) => {
     if (sortBy === field) {
@@ -251,6 +302,9 @@ export default function Dashboard() {
           onClose={() => setSelectedTrend(null)}
           dateRangeDays={filters.date_preset}
           allPosts={data.posts}
+          briefState={selectedTrend ? getBriefState(selectedTrend.trend_id) : { isGenerating: false, generatedBriefUrl: null }}
+          onBriefGenerationStart={(trendId) => setBriefGenerating(trendId, true)}
+          onBriefReady={(trendId, briefUrl) => setBriefReady(trendId, briefUrl)}
         />
       </div>
     </div>

@@ -5,39 +5,49 @@ import { useBriefPolling } from '@/lib/useBriefPolling';
 import Sparkline from './Sparkline';
 import MarketingBriefModal from './MarketingBriefModal';
 
+interface BriefState {
+  isGenerating: boolean;
+  generatedBriefUrl: string | null;
+}
+
 interface TrendDrawerProps {
   trendMetric: TrendMetrics | null;
   onClose: () => void;
   dateRangeDays: number;
   allPosts?: Post[];
+  briefState?: BriefState;
+  onBriefGenerationStart?: (trendId: string) => void;
+  onBriefReady?: (trendId: string, briefUrl: string) => void;
 }
 
-export default function TrendDrawer({ trendMetric, onClose, dateRangeDays, allPosts }: TrendDrawerProps) {
+export default function TrendDrawer({
+  trendMetric,
+  onClose,
+  dateRangeDays,
+  allPosts,
+  briefState,
+  onBriefGenerationStart,
+  onBriefReady
+}: TrendDrawerProps) {
   if (!trendMetric) return null;
 
   const [showBriefModal, setShowBriefModal] = useState(false);
-  const [isGeneratingBrief, setIsGeneratingBrief] = useState(false);
-  const [generatedBriefUrl, setGeneratedBriefUrl] = useState<string | null>(null);
 
-  // Initialize brief URL from trend data
-  useEffect(() => {
-    if (trendMetric?.trend.brief_url) {
-      setGeneratedBriefUrl(trendMetric.trend.brief_url);
-    }
-  }, [trendMetric?.trend.brief_url]);
+  // Use state from parent component (persists across drawer sessions)
+  const isGeneratingBrief = briefState?.isGenerating || false;
+  const generatedBriefUrl = briefState?.generatedBriefUrl || null;
 
   // Use polling hook to check for brief generation
   useBriefPolling({
     trendId: trendMetric.trend_id,
     isPolling: isGeneratingBrief,
     onBriefReady: (briefUrl) => {
-      setGeneratedBriefUrl(briefUrl);
-      setIsGeneratingBrief(false);
+      onBriefReady?.(trendMetric.trend_id, briefUrl);
     },
     onError: (error) => {
       console.error('Brief polling error:', error);
-      setIsGeneratingBrief(false);
-      // You could show an error message here
+      // Stop polling on error by notifying parent
+      onBriefReady?.(trendMetric.trend_id, generatedBriefUrl || '');
     }
   });
 
@@ -74,12 +84,11 @@ export default function TrendDrawer({ trendMetric, onClose, dateRangeDays, allPo
     // Brief generation request submitted - start polling
     console.log('Brief generation started for:', briefId);
     setShowBriefModal(false);
-    // Note: polling will be started by the isGeneratingBrief state
+    // Note: polling will be started by the parent component state
   };
 
   const handleBriefGenerationStart = () => {
-    setIsGeneratingBrief(true);
-    setGeneratedBriefUrl(null);
+    onBriefGenerationStart?.(trendMetric.trend_id);
   };
 
   return (
