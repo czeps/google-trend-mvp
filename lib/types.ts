@@ -24,6 +24,7 @@ export interface Trend {
   is_active: boolean;
   alt_names: string[];
   created_at: string;
+  brief_url?: string;
 }
 
 export interface PostTrend {

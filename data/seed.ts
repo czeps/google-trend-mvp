@@ -7,7 +7,8 @@ export const trends: Trend[] = [
     label: 'AI Code Generation',
     is_active: true,
     alt_names: ['ai code', 'codegen', 'github copilot'],
-    created_at: '2024-09-01T00:00:00Z'
+    created_at: '2024-09-01T00:00:00Z',
+    brief_url: undefined
   },
   {
     trend_id: '2',
@@ -15,7 +16,8 @@ export const trends: Trend[] = [
     label: 'AI Customer Support',
     is_active: true,
     alt_names: ['ai chatbot', 'customer support ai', 'automated support'],
-    created_at: '2024-09-05T00:00:00Z'
+    created_at: '2024-09-05T00:00:00Z',
+    brief_url: undefined
   },
   {
     trend_id: '3',
@@ -23,7 +25,8 @@ export const trends: Trend[] = [
     label: 'AI Content Creation',
     is_active: true,
     alt_names: ['ai writing', 'ai design', 'content generation'],
-    created_at: '2024-09-10T00:00:00Z'
+    created_at: '2024-09-10T00:00:00Z',
+    brief_url: undefined
   }
 ];
 

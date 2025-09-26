@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TrendMetrics, Post } from '@/lib/types';
 import { calculateEngagementScore, generateSparklineData } from '@/lib/metrics';
+import { useBriefPolling } from '@/lib/useBriefPolling';
 import Sparkline from './Sparkline';
 import MarketingBriefModal from './MarketingBriefModal';
 
@@ -17,6 +18,28 @@ export default function TrendDrawer({ trendMetric, onClose, dateRangeDays, allPo
   const [showBriefModal, setShowBriefModal] = useState(false);
   const [isGeneratingBrief, setIsGeneratingBrief] = useState(false);
   const [generatedBriefUrl, setGeneratedBriefUrl] = useState<string | null>(null);
+
+  // Initialize brief URL from trend data
+  useEffect(() => {
+    if (trendMetric?.trend.brief_url) {
+      setGeneratedBriefUrl(trendMetric.trend.brief_url);
+    }
+  }, [trendMetric?.trend.brief_url]);
+
+  // Use polling hook to check for brief generation
+  useBriefPolling({
+    trendId: trendMetric.trend_id,
+    isPolling: isGeneratingBrief,
+    onBriefReady: (briefUrl) => {
+      setGeneratedBriefUrl(briefUrl);
+      setIsGeneratingBrief(false);
+    },
+    onError: (error) => {
+      console.error('Brief polling error:', error);
+      setIsGeneratingBrief(false);
+      // You could show an error message here
+    }
+  });
 
   const formatNumber = (num: number): string => {
     if (num >= 1000000) {
@@ -47,10 +70,11 @@ export default function TrendDrawer({ trendMetric, onClose, dateRangeDays, allPo
     .sort((a, b) => b.engagement - a.engagement)
     .slice(0, 5);
 
-  const handleBriefGenerated = (briefId: string, url?: string) => {
-    setIsGeneratingBrief(false);
-    setGeneratedBriefUrl(url || `#brief-${briefId}`);
+  const handleBriefGenerated = (briefId: string) => {
+    // Brief generation request submitted - start polling
+    console.log('Brief generation started for:', briefId);
     setShowBriefModal(false);
+    // Note: polling will be started by the isGeneratingBrief state
   };
 
   const handleBriefGenerationStart = () => {
@@ -96,23 +120,33 @@ export default function TrendDrawer({ trendMetric, onClose, dateRangeDays, allPo
                     Generating Brief...
                   </div>
                 ) : generatedBriefUrl ? (
-                  // Completed State
+                  // Completed State - Show download button
                   <div className="flex flex-col gap-2">
-                    <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                      </svg>
-                      Brief will be delivered to your email in a couple of minutes
+                    <div className="flex gap-2">
+                      <a
+                        href={generatedBriefUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Download Brief PDF
+                      </a>
+                      <button
+                        onClick={() => setShowBriefModal(true)}
+                        className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+                      >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                        Generate New Brief
+                      </button>
                     </div>
-                    <button
-                      onClick={() => setShowBriefModal(true)}
-                      className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 w-fit"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                      </svg>
-                      Generate New Brief
-                    </button>
+                    <p className="text-xs text-gray-600">
+                      Brief has been generated and is ready for download
+                    </p>
                   </div>
                 ) : (
                   // Initial State

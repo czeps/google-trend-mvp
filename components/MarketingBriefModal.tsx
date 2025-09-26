@@ -7,7 +7,7 @@ interface MarketingBriefModalProps {
   trendMetric: TrendMetrics;
   allPosts: Post[];
   onGenerationStart?: () => void;
-  onGenerationComplete?: (briefId: string, url?: string) => void;
+  onGenerationComplete?: (briefId: string) => void;
 }
 
 interface BriefFormData {
@@ -326,25 +326,20 @@ export default function MarketingBriefModal({
       });
 
       if (response.ok) {
-        // Try to get the response data which might contain a URL to the brief
-        let briefUrl = null;
-        try {
-          const responseData = await response.json();
-          briefUrl = responseData.brief_url || responseData.url;
-        } catch {
-          // If response is not JSON, that's okay, we'll use a default URL
-        }
+        // Brief submission successful - now we wait for polling to detect the PDF
+        console.log('Brief generation request submitted successfully');
 
-        // Notify parent that generation is complete
-        onGenerationComplete?.(briefId, briefUrl);
+        // Notify parent that generation has started (triggers polling)
+        onGenerationComplete?.(briefId);
+
+        // Close the modal
+        onClose();
       } else {
         throw new Error('Failed to submit brief');
       }
     } catch (error) {
       console.error('Error submitting brief:', error);
       alert('Failed to submit marketing brief. Please try again.');
-      // Reset the generation state on error
-      onGenerationComplete?.(briefId, undefined);
     } finally {
       setIsSubmitting(false);
     }
