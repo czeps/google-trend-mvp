@@ -1,0 +1,11 @@
+runConfig:
+  cpu: 1
+  memoryMiB: 1024
+  concurrency: 80
+
+env:
+  - variable: NODE_ENV
+    value: production
+
+build:
+  command: "npm ci && npm run build"
