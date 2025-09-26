@@ -159,12 +159,25 @@ export default function Dashboard() {
     <div className="min-h-screen bg-gray-100">
       <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            AI Use-Case Trends
-          </h1>
-          <p className="mt-2 text-gray-600">
-            Dashboard for exploring social posts and detected trends
-          </p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                AI Use-Case Trends
+              </h1>
+              <p className="mt-2 text-gray-600">
+                Dashboard for exploring social posts and detected trends
+              </p>
+            </div>
+            <a
+              href="/data"
+              className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 1.79 4 4 4h8c0-2.21-1.79-4-4-4H7c-2.21 0-4-1.79-4-4zm0 0V4c0-2.21 1.79-4 4-4h8c2.21 0 4 1.79 4 4v10c0 2.21-1.79 4-4 4" />
+              </svg>
+              View All Data
+            </a>
+          </div>
         </div>
 
         {ErrorBanner}

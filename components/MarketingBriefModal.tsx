@@ -15,7 +15,6 @@ interface BriefFormData {
   campaign_name: string;
   trend_id: string;
   selected_posts: string[];
-  delivery_email: string;
 
   // Goal & measurement
   objective: string;
@@ -115,7 +114,6 @@ export default function MarketingBriefModal({
     campaign_name: `${trendMetric.trend.label} Campaign`,
     trend_id: trendMetric.trend_id,
     selected_posts: [], // No posts selected by default
-    delivery_email: '',
     objective: '',
     primary_kpi: '',
     kpi_target_value: 0,
@@ -367,24 +365,13 @@ export default function MarketingBriefModal({
           {/* Core Section */}
           <section>
             <h3 className="text-lg font-semibold mb-4 text-blue-600 border-b pb-2">Core</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Campaign Name *</label>
                 <input
                   type="text"
                   value={formData.campaign_name}
                   onChange={(e) => handleInputChange('campaign_name', e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Delivery Email *</label>
-                <input
-                  type="email"
-                  value={formData.delivery_email}
-                  onChange={(e) => handleInputChange('delivery_email', e.target.value)}
-                  placeholder="email@company.com"
                   className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
                   required
                 />
