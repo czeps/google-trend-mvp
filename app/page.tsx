@@ -121,7 +121,7 @@ export default function Dashboard() {
 
   // Initialize brief states from trend data when data loads
   useEffect(() => {
-    if (data.trends.length > 0) {
+    if (data.trends.length > 0 || data.trendLinks.length > 0) {
       setBriefGenerationStates(prev => {
         const updatedStates: Record<string, { isGenerating: boolean; generatedBriefUrl: string | null }> = { ...prev };
         let hasChanges = false;
@@ -129,12 +129,18 @@ export default function Dashboard() {
         data.trends.forEach(trend => {
           // Always sync with database state, preserving isGenerating if currently active
           const currentState = prev[trend.trend_id];
-          const dbBriefUrl = trend.brief_url || null;
+
+          // Check trend_links for the latest brief URL (prioritize over trend.brief_url)
+          const trendLink = data.trendLinks.find(tl => tl.trend_id === trend.trend_id);
+          const dbBriefUrl = trendLink?.url || trend.brief_url || null;
 
           // Debug logging
-          if (dbBriefUrl) {
-            console.log(`🔄 Syncing brief state for trend ${trend.trend_id}: ${dbBriefUrl}`);
-          }
+          console.log(`🔄 Syncing brief state for trend ${trend.trend_id}:`, {
+            trendLinkUrl: trendLink?.url,
+            trendBriefUrl: trend.brief_url,
+            finalUrl: dbBriefUrl,
+            source: trendLink?.url ? 'trend_links' : 'trends.brief_url'
+          });
 
           // Check if we need to update this trend's state
           if (!currentState || currentState.generatedBriefUrl !== dbBriefUrl) {
@@ -145,7 +151,7 @@ export default function Dashboard() {
             };
 
             if (dbBriefUrl) {
-              console.log(`✅ Updated brief state for trend ${trend.trend_id}: showing download button`);
+              console.log(`✅ Updated brief state for trend ${trend.trend_id}: showing download button from ${trendLink?.url ? 'trend_links' : 'trends.brief_url'}`);
             }
           }
         });
@@ -154,7 +160,7 @@ export default function Dashboard() {
         return hasChanges ? updatedStates : prev;
       });
     }
-  }, [data.trends]);
+  }, [data.trends, data.trendLinks]);
 
   // Brief state management functions
   const getBriefState = (trendId: string) => {
@@ -165,11 +171,17 @@ export default function Dashboard() {
       return state;
     }
 
-    // If no state, check trend_links for the latest brief URL
+    // If no state, check trend_links for the latest brief URL (with fallback to trends.brief_url)
     const trendLink = data.trendLinks.find(tl => tl.trend_id === trendId);
-    const dbBriefUrl = trendLink?.url || null;
+    const trend = data.trends.find(t => t.trend_id === trendId);
+    const dbBriefUrl = trendLink?.url || trend?.brief_url || null;
 
-    console.log(`🔄 Fallback to trend_links for ${trendId}:`, { dbBriefUrl });
+    console.log(`🔄 Fallback to database for ${trendId}:`, {
+      trendLinkUrl: trendLink?.url,
+      trendBriefUrl: trend?.brief_url,
+      finalUrl: dbBriefUrl,
+      source: trendLink?.url ? 'trend_links' : (trend?.brief_url ? 'trends.brief_url' : 'none')
+    });
 
     // Return state based on database data
     return {
