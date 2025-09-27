@@ -18,7 +18,16 @@ export default function BriefsPage() {
     async function loadTrends() {
       try {
         setLoading(true);
+        console.log('🔄 Starting data fetch for briefs page...');
         const data = await fetchAllData();
+
+        console.log('📊 Fetched data for briefs page:', {
+          trendsCount: data.trends.length,
+          trendLinksCount: data.trendLinks.length,
+          trends: data.trends.map(t => ({ id: t.trend_id, label: t.label, brief_url: t.brief_url })),
+          trendLinks: data.trendLinks.map(tl => ({ trend_id: tl.trend_id, url: tl.url, label: tl.label }))
+        });
+
         setTrends(data.trends);
         setTrendLinks(data.trendLinks);
         setError(null);

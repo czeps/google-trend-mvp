@@ -1,5 +1,5 @@
 import { getSupabaseClient } from './supabase';
-import { trends, posts, postTrends } from '@/data/seed';
+import { trends, posts, postTrends, trendLinks } from '@/data/seed';
 import { Post, Trend, PostTrend, TrendLink } from './types';
 
 // Check if Supabase is configured
@@ -111,8 +111,8 @@ export async function fetchTrendLinks(): Promise<TrendLink[]> {
       return [];
     }
   } else {
-    console.log('🔗 No trend links in local data (Supabase not configured)...');
-    return [];
+    console.log('🔗 Fetching trend links from local data (Supabase not configured)...');
+    return trendLinks;
   }
 }
 

@@ -1,4 +1,4 @@
-import { Trend, Post, PostTrend } from '@/lib/types';
+import { Trend, Post, PostTrend, TrendLink } from '@/lib/types';
 
 export const trends: Trend[] = [
   {
@@ -163,5 +163,21 @@ export const postTrends: PostTrend[] = [
     raw_label: 'codegen',
     normalized_label: 'AI Code Generation',
     created_at: '2024-09-16T11:20:00Z'
+  }
+];
+
+// Mock trend_links data - represents the actual marketing brief PDFs
+export const trendLinks: TrendLink[] = [
+  {
+    trend_id: '1',
+    url: 'https://storage.googleapis.com/marketing-briefs/ai-code-generation-brief.pdf',
+    label: 'AI Code Generation Marketing Brief',
+    created_at: '2024-09-21T12:00:00Z'
+  },
+  {
+    trend_id: '2',
+    url: 'https://storage.googleapis.com/marketing-briefs/ai-customer-support-brief.pdf',
+    label: 'AI Customer Support Marketing Brief',
+    created_at: '2024-09-21T13:30:00Z'
   }
 ];
