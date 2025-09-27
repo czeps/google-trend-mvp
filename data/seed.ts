@@ -169,12 +169,14 @@ export const postTrends: PostTrend[] = [
 // Mock trend_links data - represents the actual marketing brief PDFs
 export const trendLinks: TrendLink[] = [
   {
+    link_id: 'link_1',
     trend_id: '1',
     url: 'https://storage.googleapis.com/marketing-briefs/ai-code-generation-brief.pdf',
     label: 'AI Code Generation Marketing Brief',
     created_at: '2024-09-21T12:00:00Z'
   },
   {
+    link_id: 'link_2',
     trend_id: '2',
     url: 'https://storage.googleapis.com/marketing-briefs/ai-customer-support-brief.pdf',
     label: 'AI Customer Support Marketing Brief',
