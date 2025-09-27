@@ -34,12 +34,30 @@ export default function BriefsPage() {
   }, []);
 
   // Filter trends that have generated briefs (have corresponding trend_links)
-  const trendsWithBriefs = trends.filter(trend =>
-    trendLinks.some(link => link.trend_id === trend.trend_id)
-  ).map(trend => ({
-    ...trend,
-    brief_url: trendLinks.find(link => link.trend_id === trend.trend_id)?.url || null
-  }));
+  const trendsWithBriefs = trends.filter(trend => {
+    const hasLink = trendLinks.some(link => link.trend_id === trend.trend_id);
+    const hasBriefUrl = trend.brief_url;
+    // Include trends that have either trend_links entries OR brief_url in trends table
+    return hasLink || hasBriefUrl;
+  }).map(trend => {
+    const trendLink = trendLinks.find(link => link.trend_id === trend.trend_id);
+    // Prioritize trend_links URL over trends.brief_url
+    const finalUrl = trendLink?.url || trend.brief_url;
+
+    console.log(`Brief mapping for ${trend.label}:`, {
+      trendId: trend.trend_id,
+      trendLinkUrl: trendLink?.url,
+      trendBriefUrl: trend.brief_url,
+      finalUrl,
+      prioritySource: trendLink?.url ? 'trend_links' : 'trends_table'
+    });
+
+    return {
+      ...trend,
+      brief_url: finalUrl,
+      brief_source: trendLink?.url ? 'trend_links' : 'trends_table'
+    };
+  });
 
   const formatDate = (dateStr: string): string => {
     return new Date(dateStr).toLocaleDateString('en-US', {
