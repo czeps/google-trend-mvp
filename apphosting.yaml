@@ -6,6 +6,19 @@ runConfig:
 env:
   - variable: NODE_ENV
     value: production
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_SUPABASE_URL
+    value: https://buhnqezigvharccqallj.supabase.co
+    availability:
+      - BUILD
+      - RUNTIME
+  - variable: NEXT_PUBLIC_SUPABASE_ANON_KEY
+    value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1aG5xZXppZ3ZoYXJjY3FhbGxqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg1ODgzMTEsImV4cCI6MjA3NDE2NDMxMX0.92wMAIyQgLX5i6fI5Ckwq2kNhDLNo2mzOxCofCQ-Blk
+    availability:
+      - BUILD
+      - RUNTIME
 
 build:
   command: "npm install && npm run build"
