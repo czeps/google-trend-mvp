@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { supabase } from './supabase';
+import { getSupabaseClient } from './supabase';
 
 interface UseBriefPollingProps {
   trendId: string;
@@ -23,6 +23,15 @@ export function useBriefPolling({
       try {
         // Check if Supabase is configured
         if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+          // For local development without Supabase, simulate brief generation
+          setTimeout(() => {
+            onBriefReady(`https://example.com/brief-${trendId}.pdf`);
+          }, 5000);
+          return;
+        }
+
+        const supabase = getSupabaseClient();
+        if (!supabase) {
           // For local development without Supabase, simulate brief generation
           setTimeout(() => {
             onBriefReady(`https://example.com/brief-${trendId}.pdf`);

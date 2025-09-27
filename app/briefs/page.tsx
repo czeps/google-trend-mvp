@@ -1,6 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
+// Force dynamic rendering for Firebase App Hosting
+export const dynamic = 'force-dynamic';
 import { Trend } from '@/lib/types';
 import { fetchAllData } from '@/lib/data';
 

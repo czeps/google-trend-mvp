@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { getSupabaseClient } from './supabase';
 import { trends, posts, postTrends } from '@/data/seed';
 import { Post, Trend, PostTrend } from './types';
 
@@ -8,7 +8,8 @@ const isSupabaseConfigured = () => {
 };
 
 export async function fetchTrends(): Promise<Trend[]> {
-  if (isSupabaseConfigured()) {
+  const supabase = getSupabaseClient();
+  if (supabase && isSupabaseConfigured()) {
     console.log('📊 Fetching trends from Supabase...');
     try {
       const { data, error } = await supabase
@@ -35,7 +36,8 @@ export async function fetchTrends(): Promise<Trend[]> {
 }
 
 export async function fetchPosts(): Promise<Post[]> {
-  if (isSupabaseConfigured()) {
+  const supabase = getSupabaseClient();
+  if (supabase && isSupabaseConfigured()) {
     console.log('📄 Fetching posts from Supabase...');
     try {
       const { data, error } = await supabase
@@ -61,7 +63,8 @@ export async function fetchPosts(): Promise<Post[]> {
 }
 
 export async function fetchPostTrends(): Promise<PostTrend[]> {
-  if (isSupabaseConfigured()) {
+  const supabase = getSupabaseClient();
+  if (supabase && isSupabaseConfigured()) {
     console.log('🔗 Fetching post trends from Supabase...');
     try {
       const { data, error } = await supabase
@@ -115,7 +118,8 @@ export async function fetchAllData(): Promise<{
 
 // Function to test database connection
 export async function testConnection(): Promise<boolean> {
-  if (!isSupabaseConfigured()) {
+  const supabase = getSupabaseClient();
+  if (!supabase || !isSupabaseConfigured()) {
     console.log('Supabase not configured, using local data');
     return false;
   }

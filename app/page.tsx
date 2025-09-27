@@ -1,6 +1,9 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
+
+// Force dynamic rendering for Firebase App Hosting
+export const dynamic = 'force-dynamic';
 import { TrendMetrics, DashboardFilters, Trend, Post, PostTrend } from '@/lib/types';
 import { fetchAllData } from '@/lib/data';
 import { aggregateTrendMetrics, calculateKPIs } from '@/lib/metrics';
