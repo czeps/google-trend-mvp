@@ -37,6 +37,14 @@ export interface PostTrend {
   created_at: string;
 }
 
+export interface TrendLink {
+  link_id: string;
+  trend_id: string;
+  url: string;
+  label?: string;
+  created_at: string;
+}
+
 export interface TrendMetrics {
   trend_id: string;
   trend: Trend;

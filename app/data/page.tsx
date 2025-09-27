@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 
 // Force dynamic rendering for Firebase App Hosting
 export const dynamic = 'force-dynamic';
-import { Post, Trend, PostTrend } from '@/lib/types';
+import { Post, Trend, PostTrend, TrendLink } from '@/lib/types';
 import { fetchAllData } from '@/lib/data';
 import { calculateEngagementScore } from '@/lib/metrics';
 
@@ -19,7 +19,8 @@ export default function DataShowcase() {
     trends: Trend[];
     posts: Post[];
     postTrends: PostTrend[];
-  }>({ trends: [], posts: [], postTrends: [] });
+    trendLinks: TrendLink[];
+  }>({ trends: [], posts: [], postTrends: [], trendLinks: [] });
   const [loading, setLoading] = useState(true);
 
   // Fetch data

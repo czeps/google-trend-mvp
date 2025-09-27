@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from 'react';
 
 // Force dynamic rendering for Firebase App Hosting
 export const dynamic = 'force-dynamic';
-import { TrendMetrics, DashboardFilters, Trend, Post, PostTrend } from '@/lib/types';
+import { TrendMetrics, DashboardFilters, Trend, Post, PostTrend, TrendLink } from '@/lib/types';
 import { fetchAllData } from '@/lib/data';
 import { aggregateTrendMetrics, calculateKPIs } from '@/lib/metrics';
 import FiltersBar from '@/components/FiltersBar';
@@ -37,7 +37,8 @@ export default function Dashboard() {
     trends: Trend[];
     posts: Post[];
     postTrends: PostTrend[];
-  }>({ trends: [], posts: [], postTrends: [] });
+    trendLinks: TrendLink[];
+  }>({ trends: [], posts: [], postTrends: [], trendLinks: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -59,14 +60,14 @@ export default function Dashboard() {
         ]);
 
         console.log('✅ Data loaded successfully');
-        setData(result as { trends: Trend[]; posts: Post[]; postTrends: PostTrend[]; });
+        setData(result as { trends: Trend[]; posts: Post[]; postTrends: PostTrend[]; trendLinks: TrendLink[]; });
         setError(null);
       } catch (err) {
         console.error('❌ Failed to load data:', err);
 
         // For development, let's continue with empty data instead of showing error
         console.log('🔄 Continuing with empty data for development...');
-        setData({ trends: [], posts: [], postTrends: [] });
+        setData({ trends: [], posts: [], postTrends: [], trendLinks: [] });
         setError(`Database connection failed: ${err instanceof Error ? err.message : 'Unknown error'}. Showing empty dashboard.`);
       } finally {
         setLoading(false);
@@ -164,11 +165,11 @@ export default function Dashboard() {
       return state;
     }
 
-    // If no state, check the actual trend data for brief_url
-    const trend = data.trends.find(t => t.trend_id === trendId);
-    const dbBriefUrl = trend?.brief_url || null;
+    // If no state, check trend_links for the latest brief URL
+    const trendLink = data.trendLinks.find(tl => tl.trend_id === trendId);
+    const dbBriefUrl = trendLink?.url || null;
 
-    console.log(`🔄 Fallback to database for ${trendId}:`, { dbBriefUrl });
+    console.log(`🔄 Fallback to trend_links for ${trendId}:`, { dbBriefUrl });
 
     // Return state based on database data
     return {

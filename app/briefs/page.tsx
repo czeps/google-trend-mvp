@@ -4,11 +4,12 @@ import { useState, useEffect } from 'react';
 
 // Force dynamic rendering for Firebase App Hosting
 export const dynamic = 'force-dynamic';
-import { Trend } from '@/lib/types';
+import { Trend, TrendLink } from '@/lib/types';
 import { fetchAllData } from '@/lib/data';
 
 export default function BriefsPage() {
   const [trends, setTrends] = useState<Trend[]>([]);
+  const [trendLinks, setTrendLinks] = useState<TrendLink[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,6 +20,7 @@ export default function BriefsPage() {
         setLoading(true);
         const data = await fetchAllData();
         setTrends(data.trends);
+        setTrendLinks(data.trendLinks);
         setError(null);
       } catch (err) {
         console.error('Failed to load trends:', err);
@@ -31,8 +33,13 @@ export default function BriefsPage() {
     loadTrends();
   }, []);
 
-  // Filter trends that have generated briefs
-  const trendsWithBriefs = trends.filter(trend => trend.brief_url);
+  // Filter trends that have generated briefs (have corresponding trend_links)
+  const trendsWithBriefs = trends.filter(trend =>
+    trendLinks.some(link => link.trend_id === trend.trend_id)
+  ).map(trend => ({
+    ...trend,
+    brief_url: trendLinks.find(link => link.trend_id === trend.trend_id)?.url || null
+  }));
 
   const formatDate = (dateStr: string): string => {
     return new Date(dateStr).toLocaleDateString('en-US', {

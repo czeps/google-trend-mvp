@@ -1,6 +1,6 @@
 import { getSupabaseClient } from './supabase';
 import { trends, posts, postTrends } from '@/data/seed';
-import { Post, Trend, PostTrend } from './types';
+import { Post, Trend, PostTrend, TrendLink } from './types';
 
 // Check if Supabase is configured
 const isSupabaseConfigured = () => {
@@ -89,30 +89,61 @@ export async function fetchPostTrends(): Promise<PostTrend[]> {
   }
 }
 
+export async function fetchTrendLinks(): Promise<TrendLink[]> {
+  const supabase = getSupabaseClient();
+  if (supabase && isSupabaseConfigured()) {
+    console.log('🔗 Fetching trend links from Supabase...');
+    try {
+      const { data, error } = await supabase
+        .from('trend_links')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('❌ Error fetching trend links from Supabase:', error);
+        throw error;
+      }
+
+      console.log('✅ Trend links fetched from Supabase:', data?.length || 0);
+      return data || [];
+    } catch (error) {
+      console.error('❌ Supabase fetch failed, falling back to empty data:', error);
+      return [];
+    }
+  } else {
+    console.log('🔗 No trend links in local data (Supabase not configured)...');
+    return [];
+  }
+}
+
 export async function fetchAllData(): Promise<{
   trends: Trend[];
   posts: Post[];
   postTrends: PostTrend[];
+  trendLinks: TrendLink[];
 }> {
   const dataSource = isSupabaseConfigured() ? 'Supabase' : 'local seed data';
   console.log(`🔄 Starting to fetch data from ${dataSource}...`);
 
-  const [trendsData, postsData, postTrendsData] = await Promise.all([
+  const [trendsData, postsData, postTrendsData, trendLinksData] = await Promise.all([
     fetchTrends(),
     fetchPosts(),
     fetchPostTrends(),
+    fetchTrendLinks(),
   ]);
 
   console.log(`✅ Data fetched successfully from ${dataSource}:`, {
     trendsCount: trendsData.length,
     postsCount: postsData.length,
-    postTrendsCount: postTrendsData.length
+    postTrendsCount: postTrendsData.length,
+    trendLinksCount: trendLinksData.length
   });
 
   return {
     trends: trendsData,
     posts: postsData,
-    postTrends: postTrendsData
+    postTrends: postTrendsData,
+    trendLinks: trendLinksData
   };
 }
 

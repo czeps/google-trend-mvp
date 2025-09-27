@@ -40,10 +40,12 @@ export function useBriefPolling({
         }
 
         const { data, error } = await supabase
-          .from('trends')
-          .select('brief_url')
+          .from('trend_links')
+          .select('url, label')
           .eq('trend_id', trendId)
-          .single();
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
 
         if (error) {
           console.error('Error checking brief status:', error);
@@ -51,9 +53,9 @@ export function useBriefPolling({
           return;
         }
 
-        if (data && (data as any).brief_url) {
-          console.log('Brief is ready:', (data as any).brief_url);
-          onBriefReady((data as any).brief_url);
+        if (data && (data as any).url) {
+          console.log('Brief is ready:', (data as any).url);
+          onBriefReady((data as any).url);
         }
       } catch (error) {
         console.error('Error in checkBriefStatus:', error);
